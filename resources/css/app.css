@@ -1,0 +1,7 @@
+.dashboard_row{
+    position: relative;
+}
+.siteImage{position: absolute;
+top: 0;
+display: block;
+}

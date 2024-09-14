@@ -1,0 +1,13 @@
+/public/uploads/
+
+/bootstrap/autoload.php
+/vendor/*
+/composer.lock
+/storage
+/bootstrap
+/node_modules
+Homestead.yaml
+Homestead.json
+.idea
+.idea/*
+.env

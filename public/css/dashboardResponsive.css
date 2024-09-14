@@ -1,0 +1,52 @@
+
+ @media (max-width: 991px) {
+ .dashboard_row{
+    position: relative;
+}
+.siteImage{
+    position: absolute;
+    top: 100;
+} 
+.discriveProduct{
+    margin-top: 450px;
+}
+.home__description {
+  margin-left: 0px;
+}
+  }
+
+
+@media (max-width: 700px) {
+  .dashboard_row_main{
+   display: block;
+  }
+  }
+  
+@media (max-width: 575px) {
+    .row{
+      margin-left: -5px;
+      margin-right: -5px;
+    }
+    .featured__card{
+    justify-content: center;
+    margin: 0px auto;}
+    .featured__container {
+      margin-top: 93px;
+    }
+   
+    .featured__img {
+      width: 200px;
+      height: 200px;
+    
+    }
+    .featured__card {
+      height: 250px;
+      width: 350px;
+
+    }
+    .featured__card:hover {
+      height: 230px;
+    }
+  }
+
+  
