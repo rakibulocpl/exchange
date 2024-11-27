@@ -115,12 +115,12 @@
                 <div>
 
                     <div class="tab justify-content-around">
-                        <button class="tablinks active" onclick="openCity(event, 'Sell')">Sell</button>
-                        <button class="tablinks" onclick="openCity(event, 'Exchange')">Exchange</button>
+                        <button class="tablinks active" onclick="openCity(event, 'Exchange')">Exchange</button>
+                        <button class="tablinks " onclick="openCity(event, 'Sell')">Sell</button>
                         <button class="tablinks" onclick="openCity(event, 'upgrade')">Upgrade</button>
                     </div>
 
-                    <div id="Sell" class="tabcontent" style="display: block !important;">
+                    <div id="Sell" class="tabcontent" >
                         <form id="sellfrom" action=""
                               method="post" encType="multipart/form-data">
                             <div class="form-group">
@@ -138,7 +138,7 @@
                         </form>
                     </div>
 
-                    <div id="Exchange" class="tabcontent">
+                    <div id="Exchange" class="tabcontent" style="display: block !important;">
                         <form id="exchangeForm" action=""
                               method="post" encType="multipart/form-data">
                             <div class="form-group">

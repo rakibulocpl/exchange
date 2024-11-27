@@ -38,6 +38,12 @@
                             <button type="button"  class="buy-now btn bg-primary bg-cart m-2" data-product="{{$product->id}}"><i class="fa fa-cart-plus mr-2"></i>
                                 Buy Now
                             </button>
+                            @if(session()->has('dealId'))
+                                <button type="button" class="select-exchange btn btn-secondary m-2"
+                                        data-product="{{$product->id}}">
+                                    <i class="fa fa-exchange-alt mr-2"></i> Select for Exchange
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>

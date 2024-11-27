@@ -69,7 +69,7 @@
                     </button>
                     <div class="text-center">
                         <br>
-                        Already Registered <a class="" href="/"> Sign In</a>
+                        Already Registered <a class="" href="/login"> Sign In</a>
                     </div>
 
                 </div>

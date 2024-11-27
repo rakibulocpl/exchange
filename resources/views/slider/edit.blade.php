@@ -4,17 +4,16 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header bg-inverse-primary">{{ __('Edit Brand') }}</div>
+                    <div class="card-header bg-inverse-primary">{{ __('Edit Slider') }}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('brand.store') }}">
+                        <form method="POST" action="{{ route('slider.store') }}" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="brand_id" value="{{$brand->id}}">
+                            <input type="hidden" name="slider_id" value="{{$slider->id}}">
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $brand->name }}" required autocomplete="name" autofocus>
-
+                                    <input type="file" class="form-control required" name="image" >
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

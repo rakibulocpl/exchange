@@ -71,6 +71,7 @@ class DealController extends Controller
         $data['brand'] = Brand::where('status', 1)->pluck('name', 'id')->toArray();
         $data['dealType'] = $request->segment(1);
         $data['catId'] = $catId;
+        $data['storeAddresses'] = config('stores.offices');
 
         $data['city'] = CityList::where('status', 1)->pluck('city_name as display', 'id')->toArray();
         return view('userPanel.upgradeForm', $data);
@@ -80,16 +81,14 @@ class DealController extends Controller
     {
         $catId = $request->get('product');
         $rules = [
+            'deal_type' => 'required',
             'brand' => 'required',
-            'ram' => 'required',
-            'ramstatus' => 'required',
             'processor' => 'required',
             'processorstatus' => 'required',
-            'deal_type' => 'required',
+            'ram' => 'required',
+            'ramstatus' => 'required',
             'storage' => 'required',
             'storagestatus' => 'required',
-            'display' => 'required',
-            'displaystatus' => 'required',
             'graphics' => 'required',
             'graphicsstatus' => 'required',
             'laptoppower' => 'required',
@@ -98,6 +97,8 @@ class DealController extends Controller
         ];
         if ($catId == 2) {
             $rules['battery'] = 'required';
+            $rules['display'] = 'required';
+            $rules['displaystatus'] = 'required';
             $rules['physicalstatus'] = 'required';
         }
 //        dd($request->all());
@@ -157,8 +158,9 @@ class DealController extends Controller
             $data = (object)['message' => "Submitted a new deal Deal Id : $tracking_no", 'email' => 'info@systemeye.net'];
 //            event(new SendDealSubmissionNotification($data));
 
-            return redirect()->to('deal/confirmation');
+            return redirect()->to('deal/confirmation?dealId='.$tracking_no.'&dealType='.$dealistList->deal_type);
         } catch (\Exception $e) {
+            dd($e->getLine().$e->getMessage());
             DB::rollBack();
             Session::flash('error', "Please Contact with Support team");
             return redirect()->to('/');
@@ -184,6 +186,7 @@ class DealController extends Controller
             $upgradeDetails->city = $request->get('city');
             $upgradeDetails->thana = $request->get('thana');
             $upgradeDetails->service_from = $request->get('service_from');
+            $upgradeDetails->selected_office = $request->get('selected_office');
             $upgradeDetails->save();
             $trackingPrefix = 4;
             DB::statement("update  upgrade_service, upgrade_service as table2  SET upgrade_service.tracking_no=(
@@ -205,9 +208,11 @@ class DealController extends Controller
 
     }
 
-    public function confirmation()
+    public function confirmation(Request  $request)
     {
-        return view('userPanel.confirmation');
+        $dealId = $request->query('dealId');
+        $dealType = $request->query('dealType');
+        return view('userPanel.confirmation',compact('dealId','dealType'));
     }
 
     public function confirmationUpdate()
@@ -217,6 +222,7 @@ class DealController extends Controller
 
     public function viewDeal($trackingno)
     {
+
         $dealData = DealList::leftjoin('ex_laptop_details as exd', 'exd.id', '=', 'deal_list.ref_id')
             ->leftjoin('users as customer', 'customer.id', '=', 'deal_list.created_by')
             ->leftjoin('brands', 'brands.id', '=', 'exd.brand_id')
@@ -228,6 +234,7 @@ class DealController extends Controller
                 'deal_list.tracking_no',
                 'deal_list.created_at as deal_date',
                 'deal_list.estimated_price',
+                'deal_list.deal_type',
                 'customer.phone as customerPhone',
                 'customer.name as customerName',
                 'brands.name as brandName',

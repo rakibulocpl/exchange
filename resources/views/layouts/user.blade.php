@@ -49,6 +49,34 @@
             max-width: 100%;
             height: auto;
         }
+        .loader-container-all {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+            display: none;
+        }
+
+        .loader-all {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -60px;
+            margin-top: -60px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
@@ -68,11 +96,12 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto" style="font-size: 18px;margin: 0 auto;">
                     <li class="nav-item">
-                        <a class="nav-link " href="{{route('user.sellForm')}}">{{ __('Sell') }}</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link " href="{{route('user.exchangeForm')}}">{{ __('Exchange') }}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{{route('user.sellForm')}}">{{ __('Sell') }}</a>
+                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{{route('user.shop')}}" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Buy') }}</a>
                                     <?php
@@ -123,6 +152,7 @@
                         <li class="nav-item dropdown">
                             <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
+
                                 <?php
                                 $first_character = substr(\Illuminate\Support\Facades\Auth::user()->name, 0, 1);
                                 ?>
@@ -138,7 +168,7 @@
                                             <p class="mb-0">{{\Illuminate\Support\Facades\Auth::user()->phone}}</p>
                                         </div>
                                     </div>
-                                    <a class="dropdown-item" href="/my-account">
+                                    <a class="dropdown-item" href="/my-account" onclick="location.replace('/my-account')" id="my-account">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                              stroke-linejoin="round"
@@ -148,7 +178,8 @@
                                             </path>
                                             <circle cx="12" cy="7" r="4"></circle>
                                         </svg>
-                                        My account</a>
+                                        My account
+                                    </a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item"
                                        href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -161,19 +192,25 @@
                                             <polyline points="16 17 21 12 16 7"></polyline>
                                             <line x1="21" y1="12" x2="9" y2="12"></line>
                                         </svg>
-                                        Sign Out</a>
+                                        Sign Out
+                                    </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                           style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
+                            </button>
+
                         </li>
                     @endguest
                 </ul>
             </div>
         </div>
     </nav>
-    <main class="py-4">
+    <main class="py-4" style="min-height: 60vh">
+        <div id="loader-all" class="loader-container-all">
+            <div class="loader-all"></div>
+        </div>
         @yield('content')
     </main>
     @include('inc/user-footer')
@@ -186,6 +223,32 @@
 <script>
     $(document).ready(function () {
         $(".dropdown-toggle").dropdown();
+        $(".select-exchange").on('click', function () {
+            let productId = $(this).attr('data-product');
+            let allLoader = $('#loader-all');
+            allLoader.show();
+            $.ajax({
+                url: "{{ route('user.selectForExchange') }}", // Define this route in your web.php
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: {
+                    product_id: productId,
+                    deal_id: '{{ session('dealId') }}' // Pass the dealId from session
+                },
+                success: function (response) {
+                    if (response.success == true) {
+                        alert(response.message);
+                        location.replace('/');
+                    } else {
+                        alert(response.message);
+                    }
+
+                    allLoader.hide();
+                }
+            });
+        });
     });
 </script>
 </body>

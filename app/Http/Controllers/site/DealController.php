@@ -202,6 +202,7 @@ class DealController extends Controller
         $data = UpgradeService::leftjoin('city_list as city','city.id','=','upgrade_service.city')
             ->leftjoin('product_categories as product','product.id','=','upgrade_service.category_id')
             ->leftjoin('deal_status','deal_status.id','=','upgrade_service.status')
+            ->orderBy('id','desc')
             ->get([
                 'upgrade_service.*',
                 'product.name as product',
@@ -246,6 +247,7 @@ class DealController extends Controller
             ->leftjoin('brands','brands.id','=','exd.brand_id')
             ->leftjoin('product_categories as product','product.id','=','deal_list.category_id')
             ->leftjoin('deal_status','deal_status.id','=','deal_list.status')
+            ->leftjoin('products as exp','exp.id','exd.selected_product_for_exchange')
             ->where('deal_list.id',$dealId)
             ->first([
                 'exd.*',
@@ -260,7 +262,11 @@ class DealController extends Controller
                 'brands.name as brandName',
                 'product.name as product',
                 'deal_status.status_name',
-                'deal_list.status'
+                'deal_list.status',
+                'exp.product_code as exp_product_code',
+                'exp.product_name as exp_product_name',
+                'exp.id as exp_product_id',
+                'exp.price as exp_product_price',
             ]);
         $dealByThisUser =  DealList::leftjoin('ex_laptop_details as exd','exd.id','=','deal_list.ref_id')
             ->leftjoin('product_categories as product','product.id','=','deal_list.category_id')

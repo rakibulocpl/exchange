@@ -48,6 +48,7 @@ Route::group(['as'=>'user.','namespace' => 'App\Http\Controllers\user'], functio
     Route::post('/checkout/store','CartController@checkout')->name('checkout');
     Route::post('/cart/add','CartController@addToCart')->name('addToCart');
     Route::get('/cart/remove-item/{id}','CartController@removeItem')->name('removeItem');
+    Route::post('/select-for-exchange','CartController@selectForExchange')->name('selectForExchange');
 });
 
 Route::group(['middleware' => ['authUser'],'as'=>'user.','namespace' => 'App\Http\Controllers\user'], function(){
@@ -148,7 +149,7 @@ Route::group(['middleware' => ['auth','checkAdmin'],'prefix' => 'admin',  'names
     Route::get('product/add','ProductController@create')->name('product.add');
     Route::post('product/store','ProductController@store')->name('product.store');
     Route::get('product/exit/{id}','ProductController@edit')->name('product.edit');
-    Route::get('product/view/{orderId}','ProductController@view')->name('product.view');
+    Route::get('product/view/{productId}','ProductController@view')->name('product.view');
     Route::get('product/get-list','ProductController@getList')->name('product.getList');
     Route::get('product/delete/{brandId}','ProductController@delete')->name('product.delete');
     Route::get('product/delete-image/{imageId}','ProductController@imageDelete')->name('product.imageDelete');

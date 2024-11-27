@@ -133,7 +133,9 @@
                                         <br>
                                         <span class="v_label">Storage:</span> {{($details->storage?explode('@',$details->storage)[1]:'').' / '.$details->storagestatus}}
                                         <br>
+                                        @if(!empty($details->displaystatus))
                                         <span class="v_label">Display:</span> {{($details->display?explode('@',$details->display)[1]:'').' / '.$details->displaystatus}}
+                                        @endif
 
 
                                         @if(!empty($details->monitor_brand))
@@ -147,8 +149,8 @@
                                         @endif
                                         <br>
                                         @if(!empty($details->battery))
-                                        <span class="v_label">Battery Backup:</span> {{($details->battery?explode('@',$details->battery)[1]:'')}}
-                                        <br>
+                                            <span class="v_label">Battery Backup:</span> {{($details->battery?explode('@',$details->battery)[1]:'')}}
+                                            <br>
                                         @endif
                                         <span class="v_label">Graphics Card: </span> {{($details->graphics?explode('@',$details->graphics)[1]:'').' / '.$details->graphicsstatus}}
 
@@ -161,16 +163,29 @@
                                         <span class="v_label">More Condition:</span> <br>
                                         @if(!empty($details->more_condition))
                                             <ul>
-
+                                                @foreach($details->more_condition as $value)
+                                                    <li>{{$value}}</li>
+                                                @endforeach
                                             </ul>
-                                            @foreach($details->more_condition as $value)
-                                                <li>{{$value}}</li>
-                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="card mt-2">
+
+                                    <div class="card-body border rounded">
+                                        <strong class="text-info">Request for Exchange :</strong><br><br>
+                                        @if(!empty($dealData->exp_product_id))
+                                            <span class="v_label">Code: </span> <a target="_blank" href="{{route('product.view',[$dealData->exp_product_id])}}">{{$dealData->exp_product_code}}</a><br>
+                                            <span class="v_label">Name: </span> {{$dealData->exp_product_name}}<br>
+                                            <span class="v_label">Price: </span> {{$dealData->exp_product_price}}<br>
+                                        @else
+                                            <span class="v_label">Not Selected<br>
                                         @endif
 
 
                                     </div>
                                 </div>
+
 
                             </div>
                             <div class="col-md-6">
@@ -207,7 +222,7 @@
                                                         <input type="text" min="0" class="input-sm"
                                                                name="estimated_price"
                                                                value="{{ $priceRange }}"
-                                                                required>
+                                                               required>
                                                         <input type="hidden" value="{{$dealData->id}}"
                                                                name="deal_id">
                                                         <input type="hidden" value="{{$dealData->customerPhone}}"
@@ -291,7 +306,7 @@
                                     <tfoot class="bg-success text-white bol">
                                     <tr>
                                         <th colspan="3">Total</th>
-                                        <th >{{$totalPrice}}</th>
+                                        <th>{{$totalPrice}}</th>
                                     </tr>
                                     </tfoot>
                                 </table>

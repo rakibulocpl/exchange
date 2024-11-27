@@ -25,8 +25,15 @@
                     <p><i style="color: #00AEEF;font-size: 18px" class="fas fa-phone "></i> +88 01757555999, 09678800514</p>
                     <p>
                         <i style="color: #00AEEF;font-size: 18px" class="fas fa-envelope "></i>
-                         info@exchangekori.com
+                        info@exchangekori.com
                     </p>
+                    <p class=" fw-bold " style="font-size: 14px">
+                        <i style="color: #00AEEF;font-size: 18px" style="color: #00AEEF;font-size: 18px" class="fas fa-map-marker-alt"></i>
+                        Mirpur Branch
+                        GA Foundation Building, 3rd Floor, House-5, Road-1, Main Road, Pallabi Rd, Mirpur-11, Dhaka 1216
+                    </p>
+                    <p><i style="color: #00AEEF;font-size: 18px" class="fas fa-phone "></i>+8801765668800, 09678800514</p>
+
                 </div>
                 <!-- Grid column -->
 

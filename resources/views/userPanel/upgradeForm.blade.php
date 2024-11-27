@@ -295,13 +295,13 @@
                                             <div class="row mt-1">
                                                 <div class="form_input radio-group">
                                                     <label class="form-check-inline">
-                                                        <input type="radio" class="required" checked name="service_from"
+                                                        <input type="radio" class="required delivery_method" checked name="service_from"
                                                                value="outlet">
                                                         <span class="radio-icon"><i class="fa fa-shop"></i></span>
                                                         Service From Outlet
                                                     </label>
                                                     <label class="form-check-inline">
-                                                        <input type="radio" class="required" name="service_from"
+                                                        <input type="radio" class="required delivery_method" name="service_from"
                                                                value="home">
                                                         <span class="radio-icon"><i class="fas fa-home"></i></span>
                                                         Home/Office Service
@@ -310,14 +310,20 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mt-1">
-                                                <dev class="ml-4 p-1 rounded" style="border: 1px solid #8d9690 ">
-                                                    <strong>ExchangeKori- Head Office</strong><br>
-                                                    House: 69 (1st Floor), Road: 8, Block: D,<br>
-                                                    Niketon, Gulshan, Dhaka 1212<br>
-                                                </dev>
+                                            <div class="row mt-1" id="store_pickup">
+                                                @if(!empty($storeAddresses))
+                                                    @foreach ($storeAddresses as $office)
+                                                        <label class="office-option ml-4 p-3 mt-2 rounded" style="border: 1px solid #8d9690; width: 100%;">
+                                                            <input type="radio" name="selected_office" value="{{ $office['name'] }}" required style="margin-right: 10px;">
+                                                            <span><strong>{{ $office['name'] }}</strong></span><br>
+                                                            <span>{{ $office['address'] }}</span>
+                                                        </label>
+                                                    @endforeach
+                                                @else
+                                                    <p>No stores available at the moment.</p>
+                                                @endif
                                             </div>
-                                            <div class="row mt-1" hidden="">
+                                            <div id="home_delivery" class="row mt-1" style="display: none">
                                                 <div class="form_input">
                                                     <textarea class="form-control form-input required"
                                                               placeholder="Address Line*"
@@ -361,6 +367,16 @@
     <script src="{{asset('vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 
     <script type="text/javascript">
+        $(".delivery_method").on('click',function (e){
+            let method = $(this).val();
+            if(method == 'home'){
+                $("#store_pickup").hide();
+                $("#home_delivery").show();
+            }else{
+                $("#home_delivery").hide();
+                $("#store_pickup").show();
+            }
+        })
         $(document).ready(function () {
 
             $("#city").on("change", function () {

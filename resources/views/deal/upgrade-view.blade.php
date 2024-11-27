@@ -117,7 +117,8 @@
                                         <span class="v_label">Address:</span> {{$dealData->address_line}}<br>
                                         <span class="v_label">Thana:</span> {{$dealData->thana}}<br>
                                         <span class="v_label">City:</span> {{$dealData->city}}<br>
-                                        <span class="v_label">Get Service From :</span> {{ucfirst($dealData->service_from)}}
+                                        <span class="v_label">Get Service From :</span> {{ucfirst($dealData->service_from)}}<br>
+                                        <span class="v_label">Service Office :</span> {{ucfirst($dealData->selected_office)}}
                                     </div>
                                 </div>
 

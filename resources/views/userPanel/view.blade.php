@@ -31,6 +31,7 @@
 
                                     <div class="card-body border rounded">
                                         <span class="v_label">Deal Status: </span>{{$dealData->status_name}}<br>
+                                        <span class="v_label">Deal Type: </span>{{$dealData->deal_type}}<br>
                                         @if(!empty($dealData->estimated_price))
                                             <br>
                                             <strong class="text-primary">আনুমানিক মূল্য : {{$dealData->estimated_price}} টাকা</strong>
@@ -50,18 +51,37 @@
                                         <span class="v_label">Model:</span>  {{$dealData->model}}<br><br>
 
                                         <strong class="text-info">Specification and Condition:</strong><br><br>
-                                        <span class="v_label">Laptop Power:</span> {{$details->laptoppower}}<br>
+                                        <span class="v_label">Power:</span> {{$details->laptoppower}}<br>
                                         <span class="v_label">Processor: </span> {{($details->processor?explode('@',$details->processor)[1]:'').' / '.$details->processorstatus}}<br>
                                         <span class="v_label">RAM:</span>  {{($details->ram?explode('@',$details->ram)[1]:'').' / '.$details->ramstatus}}<br>
                                         <span class="v_label">Storage:</span> {{($details->storage?explode('@',$details->storage)[1]:'').' / '.$details->storagestatus}}<br>
                                         <span class="v_label">Display:</span>  {{($details->display?explode('@',$details->display)[1]:'').' / '.$details->displaystatus}}<br>
+                                        @if(!empty($details->monitor_brand))
+                                            <span class="v_label">Monitor Brand: </span> {{($details->monitor_brand?explode('@',$details->monitor_brand)[1]:'')}}
+                                            <br>
+                                        @endif
+
+                                        @if(!empty($details->monitor_size))
+                                            <span class="v_label">Monitor Size: </span> {{($details->monitor_size?explode('@',$details->monitor_size)[1]:'')}}
+                                            <br>
+                                        @endif
+                                        @if(!empty($details->battery))
+                                            <span class="v_label">Battery Backup:</span> {{($details->battery?explode('@',$details->battery)[1]:'')}}
+                                            <br>
+                                        @endif
                                         <span class="v_label">Graphics Card: </span>  {{($details->graphics?explode('@',$details->graphics)[1]:'').' / '.$details->graphicsstatus}}<br>
-                                        {{dd($details)}}
                                         @if(!empty($details->physicalstatus))
-                                            <span class="v_label">Physical Condition: </span>  {{$details->physicalstatus}}<br>
+                                            <span class="v_label">Physical Condition: </span>  {{ucfirst($details->physicalstatus)}}<br>
                                         @endif
 
                                         <span class="v_label">More Condition:</span> <br>
+                                        @if(!empty($details->more_condition))
+                                            <ul>
+                                                @foreach($details->more_condition as $value)
+                                                    <li>{{$value}}</li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
                                     </div>
                                 </div>
 

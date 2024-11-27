@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\ImageGallery;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ShopController extends Controller
 {
@@ -30,8 +31,12 @@ class ShopController extends Controller
         $products = Product::where('is_published',1)->paginate(15);
         return view('userPanel.shop',compact('products'));
     }
-    public function shopByCategory($slug)
+    public function shopByCategory($slug,Request $request)
     {
+        $dealId = $request->query('dealId');
+        if (!empty($dealId)) {
+            Session::put('dealId', $dealId);
+        }
         $category = Category::where('slug',$slug)->first();
         $products = Product::where('category_id',$category->id)->where('is_published',1)->paginate(15);
         return view('userPanel.shop',compact('products','category'));

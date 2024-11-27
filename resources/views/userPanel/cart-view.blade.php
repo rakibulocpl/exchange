@@ -153,12 +153,20 @@
                                     </div>
                                 </div>
                                 <div class="row mt-1" id="store_pickup">
-                                    <dev class="ml-4 p-1 rounded" style="border: 1px solid #8d9690 ">
-                                        <strong>ExchangeKori- Head Office</strong><br>
-                                        House: 69 (1st Floor), Road: 8, Block: D,<br>
-                                        Niketon, Gulshan, Dhaka 1212<br>
-                                    </dev>
+                                    @if(!empty($storeAddresses))
+                                        @foreach ($storeAddresses as $office)
+                                            <label class="office-option ml-4 p-3 mt-2 rounded" style="border: 1px solid #8d9690; width: 100%;">
+                                                <input type="radio" name="selected_office" value="{{ $office['name'] }}" required style="margin-right: 10px;">
+                                                <span><strong>{{ $office['name'] }}</strong></span><br>
+                                                <span>{{ $office['address'] }}</span>
+                                            </label>
+                                        @endforeach
+                                    @else
+                                        <p>No stores available at the moment.</p>
+                                    @endif
                                 </div>
+
+
                                 <div id="home_delivery" style="display: none">
                                     <div class=" mt-1">
                                         <div class="form_input">

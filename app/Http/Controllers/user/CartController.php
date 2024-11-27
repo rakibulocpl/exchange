@@ -5,6 +5,8 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 
 use App\Models\CityList;
+use App\Models\DealList;
+use App\Models\ExLaptopDetails;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -30,9 +32,10 @@ class CartController extends Controller
      */
     public function index()
     {
+        $storeAddresses = config('stores.offices');
         $city  = CityList::where('status',1)->pluck('city_name','id')->toArray();
         $cart = session('cart', []);
-        return view('userPanel.cart-view', compact('cart','city'));
+        return view('userPanel.cart-view', compact('cart','city','storeAddresses'));
     }
 
     public function addToCart(Request $request)
@@ -51,6 +54,7 @@ class CartController extends Controller
     }
 
     public function checkout(Request $request){
+
         try {
 
             DB::beginTransaction();
@@ -62,6 +66,7 @@ class CartController extends Controller
             $order->customer_area =$request->get('city');
             $order->address =$request->get('address_line');
             $order->service_from =$request->get('service_from');
+            $order->selected_office =$request->get('selected_office');
             $order->status = 1;
             $order->save();
             $trackingPrefix = 5;
@@ -83,6 +88,45 @@ class CartController extends Controller
 
         }
     }
+
+
+    public function selectForExchange(Request $request)
+    {
+
+        $dealId = $request->input('deal_id');
+        $productId = $request->input('product_id');
+
+        $deal = DealList::where('tracking_no', $dealId)->first();
+        if (!$deal) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Deal not found.'
+            ], 404);
+        }
+
+        $exchangeLaptop = ExLaptopDetails::find($deal->ref_id);
+
+        if (!$exchangeLaptop) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Exchange laptop details not found.'
+            ], 404);
+        }
+
+        $exchangeLaptop->selected_product_for_exchange = $productId;
+        $exchangeLaptop->save();
+
+        Session::forget('dealId');
+
+        // Return a successful response
+        return response()->json([
+            'success' => true,
+            'message' => 'Selected product for exchange has been updated successfully.'
+        ], 200);
+    }
+
+
+
 
     public function removeItem($productId){
         $cart = session('cart', []);
